@@ -1,0 +1,180 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <style>
+        #filters {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter {
+            text-align: center;
+            margin-right: 2rem;
+            margin-top: 2rem;
+            opacity: 0.7;
+        }
+
+        .filter:hover {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .filter p {
+            font-size: 0.8rem;
+        }
+
+        .filter a {
+            text-decoration: none;
+
+        }
+
+        .tax-info {
+            display: none;
+        }
+
+        .tax-toggle {
+            border: 1px solid black;
+            border-radius: 1rem;
+            height: 3.25rem;
+            padding: 1rem;
+            margin-left: 2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        #filterBox {
+            display: flex;
+            flex-wrap: wrap;
+            width: auto;
+        }
+    </style>
+
+    <div id="filters">
+        <div id="filterBox" class="d-flex justify-content-center">
+            <div class="filter ">
+                <a href="/listings" class="text-dark">
+                    <div><i class="fa-solid fa-fire fa-2x"></i></div>
+                    <p>Trendings</p>
+                </a>
+            </div>
+            <div class="filter <%= category === 'Rooms' ? '' : '' %>">
+                <a href="/listings?category=Rooms" class="text-dark">
+                    <div><i class="fa-solid fa-bed fa-2x"></i></div>
+                    <p>Rooms</p>
+                </a>
+            </div>
+            <div class="filter <%= category === 'Iconic Cities' ? '' : '' %>">
+                <a href="/listings?category=Iconic Cities" class="text-dark">
+                    <div><i class="fa-solid fa-mountain-city fa-2x"></i></div>
+                    <p>Iconic Cities</p>
+                </a>
+            </div>
+            <div class="filter <%= category === 'Mountains' ? '' : '' %>">
+                <a href="/listings?category=Mountains" class="text-dark">
+                    <div><i class="fa-solid fa-mountain fa-2x"></i></div>
+                    <p>Mountains</p>
+                </a>
+            </div>
+            <div class="filter <%= category === 'Castles' ? '' : '' %>">
+                <a href="/listings?category=Castles" class="text-dark">
+                    <div><i class="fa-solid fa-fort-awesome fa-2x"></i></div>
+                    <p>Castles</p>
+                </a>
+            </div>
+            <div class="filter <%= category === 'Amazing Pools' ? '' : '' %>">
+                <a href="/listings?category=Amazing Pools" class="text-dark">
+                    <div><i class="fa-solid fa-person-swimming fa-2x"></i></div>
+                    <p>Amazing Pools</p>
+                </a>
+            </div>
+            <div class="filter <%= category === 'Campings' ? '' : '' %>">
+                <a href="/listings?category=Campings" class="text-dark">
+                    <div><i class="fa-solid fa-campground fa-2x"></i></div>
+                    <p>Campings</p>
+                </a>
+            </div>
+            <div class="filter <%= category === 'Farms' ? '' : '' %>">
+                <a href="/listings?category=Farms" class="text-dark">
+                    <div><i class="fa-solid fa-cow fa-2x"></i></div>
+                    <p>Farms</p>
+                </a>
+            </div>
+            <div class="filter <%= category === 'Arctics' ? '' : '' %>">
+                <a href="/listings?category=Arctics" class="text-dark">
+                    <div><i class="fa-solid fa-snowflake fa-2x"></i></div>
+                    <p>Arctics</p>
+                </a>
+            </div>
+            <div class="filter <%= category === 'Domes' ? '' : '' %>">
+                <a href="/listings?category=Domes" class="text-dark">
+                    <div><i class="fa-solid fa-igloo fa-2x"></i></div>
+                    <p>Domes</p>
+                </a>
+            </div>
+            <div class="filter <%= category === 'Boats' ? '' : '' %>">
+                <a href="/listings?category=Boats" class="text-dark">
+                    <div><i class="fa-solid fa-ship fa-2x"></i></div>
+                    <p>Boats</p>
+                </a>
+            </div>
+        </div>
+
+        <% if (allListings.length===0) { %>
+            <div class="text-center mt-5">
+                <h5>No listings found for "<%= category %>"</h5>
+                <a href="/listings" class="btn btn-secondary mt-3">Reset Filter</a>
+            </div>
+            <% } %>
+
+                <% if (typeof category !=="undefined" && category) { %>
+                    <div class="text-center mt-2 mb-3">
+                        <h5>Search results for "<%= category %>"</h5>
+                    </div>
+                    <% } %>
+
+
+
+                        <div class="tax-toggle">
+                            <div class="form-check-reverse form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                    id="flewSwitchCheckDefault">
+                                <label class="form-check-label" for="flewSwitchCheckDefault">Display total after
+                                    taxes</label>
+                            </div>
+                        </div>
+
+    </div>
+
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+        <% for(let listing of allListings) {%>
+            <a href="/listings/<%= listing._id %>" class="listing-link">
+                <div class="card col listing-card" style="width: 20 rem">
+                    <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image">
+                    <div class="card-img-overlay"></div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b>
+                                <%= listing.title %>
+                            </b> <br>
+                            <%= listing.price %> / night
+                                <i class="tax-info"> &nbsp; &nbsp;+18% GST</i>
+                        </p>
+                    </div>
+                </div>
+                <% } %>
+    </div>
+
+    <script>
+        let taxSwitch = document.getElementById("flewSwitchCheckDefault");
+        taxSwitch.addEventListener("click", () => {
+            let taxInfo = document.getElementsByClassName("tax-info");
+            for (info of taxInfo) {
+                if (info.style.display != "inline") {
+                    info.style.display = "inline";
+                } else {
+                    info.style.display = "none";
+                }
+            }
+
+        });
+    </script>
