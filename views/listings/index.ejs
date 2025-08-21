@@ -1,17 +1,27 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
     <style>
+
         #filters {
+            width: 100%;
+            overflow-x: hidden; 
+        }
+
+        #filterBox {
             display: flex;
-            flex-wrap: wrap;
-            align-items: center;
+            flex-wrap: nowrap;        
+            overflow-x: auto;       
+            -webkit-overflow-scrolling: touch; 
+            gap: 2rem;
+            padding: 1rem;
+            width: 100%;
         }
 
         .filter {
+            flex: 0 0 auto;           
             text-align: center;
-            margin-right: 2rem;
-            margin-top: 2rem;
             opacity: 0.7;
+            min-width: 80px;          
         }
 
         .filter:hover {
@@ -25,32 +35,44 @@
 
         .filter a {
             text-decoration: none;
-
         }
 
         .tax-info {
             display: none;
         }
 
-        .tax-toggle {
-            border: 1px solid black;
-            border-radius: 1rem;
-            height: 3.25rem;
-            padding: 1rem;
-            margin-left: 2rem;
-            display: flex;
+       .tax-toggle {
+            border: 1px solid #ccc;       
+            border-radius: 0.5rem;       
+            height: 2rem;                 
+            padding: 0.25rem 0.75rem;     
+            margin: 0.5rem 0 0.5rem 1rem; 
+            display: inline-flex;         
             align-items: center;
+            font-size: 1.5 rem;           
         }
 
-        #filterBox {
-            display: flex;
-            flex-wrap: wrap;
-            width: auto;
+        @media only screen and (max-width: 1227px) {
+            #filterBox {
+                overflow-x: auto !important;
+            }
+            #filterBox::-webkit-scrollbar {
+                display: none;
+            }
         }
+
+          @media only screen and (max-width: 420px) {
+                .tax-toggle-container {
+                    display: flex;
+                    justify-content: center; 
+                    margin: 1rem 0;         
+                }
+            }
+
     </style>
 
     <div id="filters">
-        <div id="filterBox" class="d-flex justify-content-center">
+        <div id="filterBox" class="d-flex justify-content-center icon">
             <div class="filter ">
                 <a href="/listings" class="text-dark">
                     <div><i class="fa-solid fa-fire fa-2x"></i></div>
@@ -133,15 +155,16 @@
                     <% } %>
 
 
-
+                    <div class="tax-toggle-container">
                         <div class="tax-toggle">
-                            <div class="form-check-reverse form-switch">
+                            <div class="form-check-reverse form-switch bottom">
                                 <input class="form-check-input" type="checkbox" role="switch"
                                     id="flewSwitchCheckDefault">
                                 <label class="form-check-label" for="flewSwitchCheckDefault">Display total after
                                     taxes</label>
                             </div>
                         </div>
+                    </div>
 
     </div>
 
